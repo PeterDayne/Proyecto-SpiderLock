@@ -88,6 +88,19 @@ def descifrar(archivo_cifrado, clave_privada):
 
     print("Archivo descifrado.")
 
+# Mostrar el contenido del directorio actual
+def mostrar_contenido_directorio():
+
+    directorio = os.getcwd()
+
+    archivos = os.listdir(directorio)  
+
+    print(f"Contenido del directorio '{directorio}':")
+
+    for archivo in archivos:
+
+        print(archivo)
+
 # Función principal con el menú
 def menu():
 
@@ -96,8 +109,9 @@ def menu():
         print("""
         1. Generar claves RSA
         2. Cifrar archivo
-        3. Descifrar archivo
-        4. Salir
+        3. Descifrar archivo     
+        4. Mostrar contenido del directorio
+        5. Salir
         """)
 
         try:
@@ -151,7 +165,12 @@ def menu():
                 
                 print(f"Error inesperado: {e}")
 
+
         elif opcion == 4:
+
+            mostrar_contenido_directorio()
+
+        elif opcion == 5:
 
             sys.exit()
 
