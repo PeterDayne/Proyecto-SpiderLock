@@ -13,15 +13,18 @@ def generar_claves():
 
     clave = RSA.generate(2048)
 
-    with open("clave_privada.pem", "wb") as archivo_privado:
+    if not os.path.exists("clave_privada.pem") and not os.path.exists("clave_publica.pem"):
+        with open("clave_privada.pem", "wb") as archivo_privado:
+            archivo_privado.write(clave.export_key())
 
-        archivo_privado.write(clave.export_key())
+        with open("clave_publica.pem", "wb") as archivo_publico:
+            archivo_publico.write(clave.publickey().export_key())
 
-    with open("clave_publica.pem", "wb") as archivo_publico:
+        print("Claves RSA generadas.")
 
-        archivo_publico.write(clave.publickey().export_key())
-
-    print("Claves RSA generadas.")
+    else:
+    
+        print("Las claves ya existen, no se generaron nuevas.")
 
 # Se cifra el archivo con AES y luego se cifra la clave AES con RSA
 def cifrar(archivo, clave_publica):
