@@ -1,12 +1,33 @@
 # Proyecto SpiderLock
-Este programa implementa un sistema de cifrado híbrido utilizando AES (Advanced Encryption Standard) para cifrar archivos y RSA (Rivest-Shamir-Adleman) para cifrar la clave AES del mismo.
 
+**SpiderLock** es una herramienta de cifrado híbrido que utiliza dos algoritmos de cifrado para proteger tus archivos de manera segura: **AES (Advanced Encryption Standard)** y **RSA (Rivest-Shamir-Adleman)**.
 
- ## Instalación
-Antes de ejecutar el código, asegúrate de tener Python 3 instalado y los siguientes paquetes:
+El programa utiliza AES para cifrar los archivos de manera rápida y eficiente. Luego, la clave utilizada para cifrar el archivo se cifra utilizando RSA, un algoritmo de cifrado asimétrico. Este enfoque híbrido proporciona la seguridad del cifrado asimétrico con la eficiencia del cifrado simétrico.
+
+**SpiderLock** está diseñado para ofrecer una manera sencilla y accesible de cifrar y descifrar archivos mediante un menú interactivo en la línea de comandos.
+
+## Requisitos
+
+- Python 3.x
+- `pycryptodome` (instalable con `pip install pycryptodome`)
+- Sistema operativo: Linux, macOS o Windows (con soporte para Python)
+
+Asegúrate de tener Python instalado correctamente antes de ejecutar el programa. Puedes verificarlo con el siguiente comando:
+
+```bash
+python --version
+```
+
+ ## Instalación de pycryptodome
+Puedesar instalar pycryptodome con alguna se las siguientes instrucciones:
 
 ```bash
     pip install pycryptodome
+```
+
+o si lo prefieres:
+```python
+    pip install -r requirements.txt
 ```
 
 ## Uso
