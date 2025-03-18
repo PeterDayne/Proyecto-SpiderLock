@@ -118,26 +118,38 @@ def menu():
             archivo = input("Ingrese el archivo a cifrar (ejemplo.txt): ").strip()
             clave = input("Ingrese la clave pública (clave_publica.pem): ").strip()
 
-            if os.path.exists(archivo) and os.path.exists(clave):
+            try:
 
                 cifrar(archivo, clave)
 
-            else:
-
+            except FileNotFoundError:
+                
                 print("Error: Archivo o clave pública no encontrados.")
 
+            except Exception as e:
+                
+                print(f"Error inesperado: {e}")            
+                
         elif opcion == 3:
 
             archivo = input("Ingrese el archivo a descifrar (ejemplo.txt): ").strip()
             clave = input("Ingrese la clave privada (clave_privada.pem): ").strip()
+
+            try: 
+                
+                descifrar(archivo, clave) 
             
-            if os.path.exists(archivo) and os.path.exists(clave):
+            except FileNotFoundError:
+                
+                print("Error: Archivo o clave privada no encontrados")
 
-                descifrar(archivo, clave)
+            except ValueError:
 
-            else:
+                print("Error: No se pudo verificar la autenticidad del archivo")            
 
-                print("Error: Archivo o clave privada no encontrados.")
+            except Exception as e:
+                
+                print(f"Error inesperado: {e}")
 
         elif opcion == 4:
 
