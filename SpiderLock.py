@@ -55,26 +55,28 @@ def cifrar(archivo, clave_publica):
 # Se descifra el archivo con RSA y luego se descifra la clave AES con AES
 def descifrar(archivo_cifrado, clave_privada):
 
+    # Leer los datos del archivo cifrado
     with open(archivo_cifrado, "rb") as f:
 
         contenido = f.read()
     
-    # Extraer partes
+    # Extraer el contenido por partes
     clave_aes_cifrada = contenido[:256]
     nonce = contenido[256:272]
     tag = contenido[272:288]
     texto_cifrado = contenido[288:]
     
-    # Descifrar clave AES
+    # Importar (extraer) la clave privada RSA del archivo clave_privada.pem
     with open(clave_privada, "rb") as f:
         clave_rsa = RSA.import_key(f.read())
 
-    cifrar_rsa = PKCS1_OAEP.new(clave_rsa)
-    clave_aes = cifrar_rsa.decrypt(clave_aes_cifrada)
+    # Descifrar clave AES con RSA
+    descifrar_rsa = PKCS1_OAEP.new(clave_rsa)
+    clave_aes = descifrar_rsa.decrypt(clave_aes_cifrada)
     
-    # Descifrar datos con AES
-    cifrar_aes = AES.new(clave_aes, AES.MODE_EAX, nonce=nonce)
-    datos = cifrar_aes.decrypt_and_verify(texto_cifrado, tag)
+    # Confifurar el descifrado de AES
+    descifrar_aes = AES.new(clave_aes, AES.MODE_EAX, nonce=nonce)
+    datos = descifrar_aes.decrypt_and_verify(texto_cifrado, tag)
     
     # Guardar archivo descifrado
     with open(archivo_cifrado, "wb") as f:
