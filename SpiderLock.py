@@ -2,23 +2,28 @@
 # Fecha: 14/03/2025 (Primera versiona)
 
 # Bibliotecas
-import os
-import sys
-from Crypto.Cipher import AES, PKCS1_OAEP
-from Crypto.PublicKey import RSA
-from base64 import b64encode, b64decode
+import os # Para manipulación de directorios y archivos.
+import sys # Interacción con el sistema, en este caso, para salir del programa.
+from Crypto.Cipher import AES, PKCS1_OAEP # Proporciona la funcionalidad para cifrar/descifrar con el algoritmo AES.
+from Crypto.PublicKey import RSA # Proporciona la funcionalidad para generar y manejar claves RSA.
+from base64 import b64encode, b64decode # Para codificar/decodificar datos en base64
 
-# Generar claves con RSA
+# Genera y guarda una clave privada y una clave pública en archivos .pem
 def generar_claves():
 
+    # Genera las claves RSA de 2048 bits
     clave = RSA.generate(2048)
 
+    # Verifica si las claves ya existen en el sistema, si no, las genera
     if not os.path.exists("clave_privada.pem") and not os.path.exists("clave_publica.pem"):
+
         with open("clave_privada.pem", "wb") as archivo_privado:
-            archivo_privado.write(clave.export_key())
+
+            archivo_privado.write(clave.export_key())  # Exporta la clave privada
 
         with open("clave_publica.pem", "wb") as archivo_publico:
-            archivo_publico.write(clave.publickey().export_key())
+
+            archivo_publico.write(clave.publickey().export_key()) # Exporta la clave pública
 
         print("Claves RSA generadas.")
 
@@ -33,7 +38,7 @@ def cifrar(archivo, clave_publica):
     with open(archivo, "rb") as f:
         datos = f.read()
     
-    # Generar clave AES de manera aleatoria
+    # Generar clave AES de 16 bytes de manera aleatoria
     clave_aes = os.urandom(16)
     
     # Cifrar los datos del archivo con la clave AES
@@ -45,10 +50,10 @@ def cifrar(archivo, clave_publica):
 
         clave_rsa = RSA.import_key(f.read())
 
-    cifrar_rsa = PKCS1_OAEP.new(clave_rsa)
-    clave_aes_cifrada = cifrar_rsa.encrypt(clave_aes)
+    cifrar_rsa = PKCS1_OAEP.new(clave_rsa)  # Se usa PKCS1_OAEP para el cifrado RSA
+    clave_aes_cifrada = cifrar_rsa.encrypt(clave_aes) # Se cifra la clave AES
     
-    # Guardar archivo cifrado
+    # Guardamos el archivo cifrado (clave AES cifrada + nonce + tag + datos cifrados)
     with open(archivo, "wb") as f:
 
         f.write(clave_aes_cifrada + cifrar_aes.nonce + verificador + text_cifrado)
@@ -61,9 +66,9 @@ def descifrar(archivo_cifrado, clave_privada):
     # Leer los datos del archivo cifrado
     with open(archivo_cifrado, "rb") as f:
 
-        contenido = f.read()
+        contenido = f.read() # Leemos el archivo cifrado
     
-    # Extraer el contenido por partes
+    # Se extraen las partes del archivo cifrado (clave AES cifrada, nonce, tag, y texto cifrado)
     clave_aes_cifrada = contenido[:256]
     nonce = contenido[256:272]
     tag = contenido[272:288]
@@ -77,9 +82,9 @@ def descifrar(archivo_cifrado, clave_privada):
     descifrar_rsa = PKCS1_OAEP.new(clave_rsa)
     clave_aes = descifrar_rsa.decrypt(clave_aes_cifrada)
     
-    # Confifurar el descifrado de AES
+    # Configurar el descifrado de AES
     descifrar_aes = AES.new(clave_aes, AES.MODE_EAX, nonce=nonce)
-    datos = descifrar_aes.decrypt_and_verify(texto_cifrado, tag)
+    datos = descifrar_aes.decrypt_and_verify(texto_cifrado, tag) # Descifrar y verificar los datos
     
     # Guardar archivo descifrado
     with open(archivo_cifrado, "wb") as f:
@@ -101,10 +106,25 @@ def mostrar_contenido_directorio():
 
         print(archivo)
 
+# Mostrar nombre del proyecto en ASCII
+def mostrar_ascii_art():
+    ascii_art = '''
+ ____        _     _             _               _    
+/ ___| _ __ (_) __| | ___ _ __  | |    ___   ___| | __
+\___ \| '_ \| |/ _` |/ _ \ '__| | |   / _ \ / __| |/ /
+ ___) | |_) | | (_| |  __/ |    | |__| (_) | (__|   < 
+|____/| .__/|_|\__,_|\___|_|    |_____\___/ \___|_|\_\_
+      |_|                                             
+
+    '''
+    print(ascii_art)
+
 # Función principal con el menú
 def menu():
 
     while True:
+
+        mostrar_ascii_art()
 
         print("""
         1. Generar claves RSA
