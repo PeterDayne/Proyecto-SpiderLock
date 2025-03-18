@@ -43,7 +43,7 @@ def cifrar(archivo, clave_publica):
     
     # Cifrar los datos del archivo con la clave AES
     cifrar_aes = AES.new(clave_aes, AES.MODE_EAX)
-    text_cifrado, verificador = cifrar_aes.encrypt_and_digest(datos)
+    text_cifrado, verificador = cifrar_aes.encrypt_and_digest(datos) # Se cifran los datos y se obtiene el verificador de integridad
     
     # Cifrar clave AES (del archivo) con RSA (ya generadas)
     with open(clave_publica, "rb") as f:
@@ -53,7 +53,7 @@ def cifrar(archivo, clave_publica):
     cifrar_rsa = PKCS1_OAEP.new(clave_rsa)  # Se usa PKCS1_OAEP para el cifrado RSA
     clave_aes_cifrada = cifrar_rsa.encrypt(clave_aes) # Se cifra la clave AES
     
-    # Guardamos el archivo cifrado (clave AES cifrada + nonce + tag + datos cifrados)
+    # Guardamos el archivo cifrado (clave AES cifrada + nonce + verificador + datos cifrados)
     with open(archivo, "wb") as f:
 
         f.write(clave_aes_cifrada + cifrar_aes.nonce + verificador + text_cifrado)
