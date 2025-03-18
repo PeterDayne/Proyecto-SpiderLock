@@ -42,7 +42,7 @@ o si lo prefieres:
         Selecciona la opción 1 para generar clave_privada.pem y clave_publica.pem.
 
     2. Cifrar un archivo
-        Selecciona 2 e ingresa Nombre del archivo a cifrar y tu clave pública
+        Selecciona 2 e ingresa nombre del archivo a cifrar y tu clave pública
 
     3. Descifrar un archivo
         Selecciona 3 e ingresa el nombre del archivo a descifrar y tu clave privada
@@ -50,8 +50,6 @@ o si lo prefieres:
     4. Salir
         Selecciona 4 para salir del programa
 
-
-3. Al usar alguna de las opciones te
 
 ## Recomendaciones
 Por razaones de seguridad NO compartas tu llave pública (clave_privada.pem)
